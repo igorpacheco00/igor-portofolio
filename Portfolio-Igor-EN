@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Igor Pacheco — Bold Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #ffffff;
+    --yellow: #f5e642;
+    --blue: #1a3fff;
+    --gray: #f0f0f0;
+    --mid: #888888;
+    --border: #e0e0e0;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--white); color:var(--black); font-family:'Space Grotesk',sans-serif; font-size:15px; line-height:1.6; }
+
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    background:var(--black); height:56px;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 60px;
+  }
+  .nav-logo { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:2px; color:var(--yellow); }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a { font-size:11px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.5); text-decoration:none; transition:color 0.2s; }
+  .nav-links a:hover { color:var(--yellow); }
+
+  /* HERO — full bleed black with yellow accent */
+  .hero {
+    background:var(--black);
+    padding:100px 60px 80px;
+    position:relative; overflow:hidden;
+  }
+  .hero-bg-text {
+    position:absolute; bottom:-40px; right:-20px;
+    font-family:'Bebas Neue',sans-serif; font-size:320px; line-height:1;
+    color:rgba(255,255,255,0.03); pointer-events:none; user-select:none;
+    letter-spacing:-8px;
+  }
+  .hero-inner { max-width:1200px; margin:0 auto; position:relative; }
+  .hero-tag {
+    display:inline-block; background:var(--yellow); color:var(--black);
+    font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+    padding:6px 16px; margin-bottom:32px;
+  }
+  .hero h1 {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(80px,12vw,180px);
+    line-height:0.88; letter-spacing:2px; color:var(--white);
+    margin-bottom:0;
+  }
+  .hero h1 .outline {
+    -webkit-text-stroke:2px var(--yellow);
+    color:transparent;
+  }
+  .hero-bottom {
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-top:60px; gap:40px; flex-wrap:wrap;
+  }
+  .hero-bio {
+    font-size:16px; font-weight:300; color:rgba(255,255,255,0.6);
+    max-width:480px; line-height:1.75;
+  }
+  .hero-bio strong { color:var(--white); font-weight:600; }
+  .hero-cta-row { display:flex; gap:12px; flex-wrap:wrap; }
+  .btn-yellow {
+    background:var(--yellow); color:var(--black);
+    font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+    padding:14px 28px; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition:background 0.15s, transform 0.15s;
+  }
+  .btn-yellow:hover { background:#ffe800; transform:translateY(-1px); }
+  .btn-ghost-white {
+    border:2px solid rgba(255,255,255,0.25); color:var(--white);
+    font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+    padding:12px 28px; text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition:border-color 0.15s;
+  }
+  .btn-ghost-white:hover { border-color:var(--white); }
+
+  /* STATS BAR — yellow block */
+  .stats-bar {
+    background:var(--yellow);
+    padding:0 60px;
+    display:flex;
+  }
+  .stat-block {
+    padding:36px 60px 36px 0;
+    flex:1;
+    border-right:2px solid rgba(0,0,0,0.12);
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .stat-block:first-child { padding-left:0; }
+  .stat-block:last-child { border-right:none; }
+  .stat-n {
+    font-family:'Bebas Neue',sans-serif; font-size:64px; line-height:1;
+    letter-spacing:1px; color:var(--black);
+  }
+  .stat-l { font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:rgba(0,0,0,0.55); }
+
+  /* SECTION GENERIC */
+  .bold-section { max-width:1200px; margin:0 auto; padding:80px 60px; }
+
+  .section-flag {
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--black); color:var(--yellow);
+    font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:2px;
+    padding:6px 16px; margin-bottom:24px;
+  }
+  .section-flag span { color:rgba(255,255,0,0.4); font-size:10px; }
+
+  .section-big-title {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(48px,6vw,80px);
+    line-height:0.95; letter-spacing:1px; color:var(--black);
+    margin-bottom:48px;
+  }
+
+  /* EXPERIENCE — bold card layout */
+  .exp-cards { display:flex; flex-direction:column; gap:2px; }
+  .exp-card {
+    background:var(--gray); padding:40px 48px;
+    display:grid; grid-template-columns:220px 1fr;
+    gap:48px; cursor:default;
+    opacity:0; transform:translateY(16px);
+    transition:opacity 0.5s ease, transform 0.5s ease, background 0.2s;
+  }
+  .exp-card:hover { background:#e8e8e8; }
+  .exp-card.visible { opacity:1; transform:translateY(0); }
+  .exp-card-left {}
+  .exp-card-period { font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--mid); margin-bottom:10px; }
+  .exp-card-co { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:1px; color:var(--black); margin-bottom:4px; }
+  .exp-card-sector { font-size:11px; font-weight:500; letter-spacing:0.5px; text-transform:uppercase; color:var(--mid); }
+  .exp-card-right {}
+  .exp-card-role { font-size:18px; font-weight:700; color:var(--black); margin-bottom:8px; line-height:1.3; }
+  .badge-yellow {
+    display:inline-block; background:var(--yellow); color:var(--black);
+    font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+    padding:3px 10px; margin-bottom:16px;
+  }
+  .badge-blue {
+    display:inline-block; background:var(--blue); color:var(--white);
+    font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+    padding:3px 10px; margin-bottom:16px;
+  }
+  .exp-card-bullets { list-style:none; display:flex; flex-direction:column; gap:7px; }
+  .exp-card-bullets li { font-size:13.5px; color:#555; padding-left:18px; position:relative; line-height:1.65; }
+  .exp-card-bullets li::before { content:'→'; position:absolute; left:0; color:var(--blue); font-size:11px; top:3px; font-weight:700; }
+  .exp-card-bullets li strong { color:var(--black); font-weight:700; }
+
+  /* BLUE BLOCK — metrics full width */
+  .blue-block {
+    background:var(--blue);
+    padding:80px 60px;
+  }
+  .blue-block-inner { max-width:1200px; margin:0 auto; }
+  .blue-block-title {
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(48px,6vw,80px);
+    color:var(--yellow); letter-spacing:2px; margin-bottom:48px; line-height:1;
+  }
+  .metrics-bold-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:2px;
+  }
+  .metric-bold {
+    background:rgba(255,255,255,0.07); padding:36px 32px;
+    transition:background 0.2s;
+  }
+  .metric-bold:hover { background:rgba(255,255,255,0.12); }
+  .metric-bold-num {
+    font-family:'Bebas Neue',sans-serif; font-size:72px; line-height:1;
+    letter-spacing:0px; color:var(--white); margin-bottom:8px;
+  }
+  .metric-bold-num sup { font-size:28px; vertical-align:super; }
+  .metric-bold-label { font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--yellow); margin-bottom:6px; }
+  .metric-bold-desc { font-size:13px; color:rgba(255,255,255,0.55); line-height:1.5; }
+
+  /* SKILLS */
+  .skills-bold-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:2px; }
+  .skill-bold-block { background:var(--gray); padding:32px 36px; }
+  .skill-bold-title {
+    font-family:'Bebas Neue',sans-serif; font-size:18px; letter-spacing:2px;
+    color:var(--black); margin-bottom:16px; border-bottom:2px solid var(--black); padding-bottom:8px;
+  }
+  .skill-bold-tags { display:flex; flex-wrap:wrap; gap:8px; }
+  .skill-bold-tag {
+    background:var(--white); border:2px solid var(--black); color:var(--black);
+    font-size:12px; font-weight:600; padding:5px 14px; letter-spacing:0.3px;
+    transition:all 0.15s; cursor:default;
+  }
+  .skill-bold-tag:hover { background:var(--black); color:var(--yellow); }
+
+  /* LANGUAGES */
+  .lang-bold { display:flex; gap:2px; margin-top:2px; }
+  .lang-bold-item {
+    flex:1; background:var(--black); padding:28px 32px;
+    display:flex; align-items:center; gap:16px;
+    transition:background 0.2s;
+  }
+  .lang-bold-item:hover { background:#1a1a1a; }
+  .lang-bold-flag { font-size:28px; }
+  .lang-bold-name { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:1px; color:var(--white); }
+  .lang-bold-level { font-size:12px; font-weight:500; color:rgba(255,255,255,0.4); }
+
+  /* EDUCATION */
+  .edu-bold-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+  .edu-bold-card { background:var(--gray); padding:28px 32px; transition:background 0.2s; }
+  .edu-bold-card:hover { background:#e8e8e8; }
+  .edu-bold-year {
+    font-family:'Bebas Neue',sans-serif; font-size:16px; letter-spacing:2px;
+    color:var(--blue); margin-bottom:8px;
+  }
+  .edu-bold-deg { font-size:14px; font-weight:700; color:var(--black); line-height:1.4; margin-bottom:4px; }
+  .edu-bold-inst { font-size:12px; font-weight:400; color:var(--mid); }
+
+  /* CONTACT — yellow block */
+  .contact-bold {
+    background:var(--yellow); padding:80px 60px;
+    display:flex; justify-content:space-between; align-items:center; gap:40px; flex-wrap:wrap;
+  }
+  .contact-bold-title {
+    font-family:'Bebas Neue',sans-serif; font-size:clamp(48px,6vw,80px);
+    letter-spacing:2px; color:var(--black); line-height:0.95;
+  }
+  .contact-bold-links { display:flex; flex-direction:column; gap:12px; }
+  .contact-bold-link {
+    background:var(--black); color:var(--yellow);
+    font-size:13px; font-weight:700; letter-spacing:0.5px;
+    padding:14px 28px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:10px;
+    transition:background 0.15s;
+  }
+  .contact-bold-link:hover { background:#1a1a1a; }
+
+  footer {
+    background:var(--black); color:rgba(255,255,255,0.3);
+    padding:20px 60px; font-size:11px; font-weight:600; letter-spacing:1.5px;
+    text-transform:uppercase; display:flex; justify-content:space-between; align-items:center;
+  }
+
+  .reveal { opacity:0; transform:translateY(20px); transition:opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  @media(max-width:860px){
+    nav { padding:0 20px; }
+    .nav-links { display:none; }
+    .hero { padding:80px 24px 60px; }
+    .stats-bar { padding:0 24px; flex-wrap:wrap; }
+    .stat-block { padding:24px 0; border-right:none; border-bottom:1px solid rgba(0,0,0,0.12); min-width:45%; }
+    .bold-section { padding:60px 24px; }
+    .exp-card { grid-template-columns:1fr; gap:12px; padding:28px 24px; }
+    .blue-block { padding:60px 24px; }
+    .metrics-bold-grid { grid-template-columns:1fr 1fr; }
+    .skills-bold-grid { grid-template-columns:1fr; }
+    .lang-bold { flex-direction:column; }
+    .edu-bold-grid { grid-template-columns:1fr 1fr; }
+    .contact-bold { padding:60px 24px; }
+    footer { padding:16px 24px; flex-direction:column; gap:4px; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Igor Pacheco</div>
+  <ul class="nav-links">
+    <li><a href="#results">Results</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-text">SALES</div>
+  <div class="hero-inner">
+    <div class="hero-tag">B2B SaaS Sales Professional — Enterprise · Mid-Market · SMB · Bogotá, Colombia</div>
+    <h1>IGOR<br><span class="outline">PACHECO</span></h1>
+    <div class="hero-bottom">
+      <p class="hero-bio">
+        Senior SDR with <strong>4+ years</strong> driving pipeline growth across <strong>Latam, EMEA & US</strong> in Enterprise, Mid-Market and Small Business. Expert in inbound and outbound prospecting, ABM and CRM. <strong>150% quota achievement</strong>. Trilingual.
+      </p>
+      <div class="hero-cta-row">
+        <a href="https://www.linkedin.com/in/igor-pacheco-" target="_blank" class="btn-yellow">LinkedIn Profile →</a>
+        <a href="/cdn-cgi/l/email-protection#cba2aca4b9bbaaa8a3aea8a48baca6aaa2a7e5a8a4a6" class="btn-ghost-white">Send Email</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-block"><div class="stat-n">150%</div><div class="stat-l">Quota Achievement</div></div>
+  <div class="stat-block"><div class="stat-n">4+</div><div class="stat-l">Years in B2B SaaS</div></div>
+  <div class="stat-block"><div class="stat-n">3</div><div class="stat-l">Global Markets</div></div>
+  <div class="stat-block"><div class="stat-n">3</div><div class="stat-l">Languages</div></div>
+</div>
+
+<!-- EXPERIENCE -->
+<div class="bold-section" id="experience">
+  <div class="section-flag reveal"><span>02</span> Professional Experience</div>
+  <h2 class="section-big-title reveal">CAREER<br>HISTORY</h2>
+  <div class="exp-cards">
+    <div class="exp-card">
+      <div class="exp-card-left">
+        <div class="exp-card-period">07/2024 – 01/2025</div>
+        <div class="exp-card-co">Neogrid</div>
+        <div class="exp-card-sector">SaaS · Trade Marketing</div>
+      </div>
+      <div class="exp-card-right">
+        <div class="exp-card-role">Senior Enterprise SDR — Latam</div>
+        <div class="badge-yellow">150% Quota</div>
+        <ul class="exp-card-bullets">
+          <li>Prospected and qualified Enterprise, Mid-Market and SMB accounts across Latam, booking key meetings</li>
+          <li>Executed inbound and ABM strategies targeting Enterprise and Mid-Market accounts</li>
+          <li>Managed full pipeline in Bitrix CRM with accurate <strong>forecasting and follow-up</strong></li>
+          <li>Achieved <strong>150% of quarterly quota</strong> in new opportunities</li>
+          <li>Leveraged Lusha, Sales Navigator and Snov.io for lead generation</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-card">
+      <div class="exp-card-left">
+        <div class="exp-card-period">01/2024 – 07/2024</div>
+        <div class="exp-card-co">Accountfy</div>
+        <div class="exp-card-sector">SaaS · Financial Mgmt</div>
+      </div>
+      <div class="exp-card-right">
+        <div class="exp-card-role">BDR — Latam</div>
+        <ul class="exp-card-bullets">
+          <li>Drove new market expansion through inbound and outbound prospecting across Enterprise, Mid-Market and SMB in Latam</li>
+          <li>Managed pipeline and automation in HubSpot CRM, optimizing cadences</li>
+          <li>Partnered with Marketing on integrated demand generation campaigns</li>
+          <li>Consistently exceeded monthly targets through multi-channel outreach</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-card">
+      <div class="exp-card-left">
+        <div class="exp-card-period">03/2021 – 06/2022</div>
+        <div class="exp-card-co">Plataforma Prover</div>
+        <div class="exp-card-sector">SaaS · Church Mgmt</div>
+      </div>
+      <div class="exp-card-right">
+        <div class="exp-card-role">Account Executive / SDR / Customer Success</div>
+        <div class="badge-blue">Promoted in 12 months</div>
+        <ul class="exp-card-bullets">
+          <li>Promoted CS → SDR → AE in <strong>12 months</strong> across SMB and Mid-Market segments</li>
+          <li>Led full-cycle international sales in <strong>EMEA and US markets</strong></li>
+          <li>Contributed <strong>50% of team quota</strong> in peak months through enterprise deals</li>
+          <li>Trained 3+ new SDRs on prospecting and CRM best practices</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BLUE METRICS BLOCK -->
+<div class="blue-block" id="results">
+  <div class="blue-block-inner">
+    <h2 class="blue-block-title reveal">KEY<br>RESULTS</h2>
+    <div class="metrics-bold-grid reveal">
+      <div class="metric-bold"><div class="metric-bold-num">150<sup>%</sup></div><div class="metric-bold-label">Quota Achievement</div><div class="metric-bold-desc">Quarterly overperformance at Neogrid — Enterprise, Mid-Market & SMB across Latam</div></div>
+      <div class="metric-bold"><div class="metric-bold-num">50<sup>%</sup></div><div class="metric-bold-label">Team Quota Share</div><div class="metric-bold-desc">Individual contribution at Plataforma Prover peak months</div></div>
+      <div class="metric-bold"><div class="metric-bold-num">20–50<sup>%</sup></div><div class="metric-bold-label">Pipeline Growth</div><div class="metric-bold-desc">Consistent growth through inbound, outbound and ABM strategies</div></div>
+      <div class="metric-bold"><div class="metric-bold-num">3<sup>+</sup></div><div class="metric-bold-label">SDRs Trained</div><div class="metric-bold-desc">Onboarded and mentored on prospecting playbooks</div></div>
+      <div class="metric-bold"><div class="metric-bold-num">3</div><div class="metric-bold-label">Global Markets</div><div class="metric-bold-desc">Latam · EMEA · US — Enterprise, Mid-Market & SMB</div></div>
+      <div class="metric-bold"><div class="metric-bold-num">12<sup>mo</sup></div><div class="metric-bold-label">Time to Promotion</div><div class="metric-bold-desc">CS → Account Executive</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="bold-section" id="skills">
+  <div class="section-flag reveal"><span>03</span> Skills & Tools</div>
+  <h2 class="section-big-title reveal">EXPERTISE</h2>
+  <div class="skills-bold-grid reveal">
+    <div class="skill-bold-block"><div class="skill-bold-title">CRM Platforms</div><div class="skill-bold-tags"><span class="skill-bold-tag">HubSpot</span><span class="skill-bold-tag">Pipedrive</span><span class="skill-bold-tag">Bitrix</span><span class="skill-bold-tag">Piperun</span></div></div>
+    <div class="skill-bold-block"><div class="skill-bold-title">Sales Intelligence</div><div class="skill-bold-tags"><span class="skill-bold-tag">Sales Navigator</span><span class="skill-bold-tag">Apollo</span><span class="skill-bold-tag">Lusha</span><span class="skill-bold-tag">Snov.io</span><span class="skill-bold-tag">Clay</span><span class="skill-bold-tag">Hunter</span></div></div>
+    <div class="skill-bold-block"><div class="skill-bold-title">Sales Methodologies</div><div class="skill-bold-tags"><span class="skill-bold-tag">SPIN Selling</span><span class="skill-bold-tag">BANT</span><span class="skill-bold-tag">MEDDIC</span><span class="skill-bold-tag">Challenger Sale</span><span class="skill-bold-tag">ABM</span></div></div>
+    <div class="skill-bold-block"><div class="skill-bold-title">Core Competencies</div><div class="skill-bold-tags"><span class="skill-bold-tag">Enterprise Prospecting</span><span class="skill-bold-tag">Mid-Market</span><span class="skill-bold-tag">SMB</span><span class="skill-bold-tag">Pipeline Mgmt</span><span class="skill-bold-tag">Forecasting</span><span class="skill-bold-tag">AI for Sales</span><span class="skill-bold-tag">Copywriting</span></div></div>
+  </div>
+  <div class="lang-bold reveal" style="margin-top:2px">
+    <div class="lang-bold-item"><span class="lang-bold-flag">🇧🇷</span><div><div class="lang-bold-name">Portuguese</div><div class="lang-bold-level">Native</div></div></div>
+    <div class="lang-bold-item"><span class="lang-bold-flag">🇪🇸</span><div><div class="lang-bold-name">Spanish</div><div class="lang-bold-level">Fluent</div></div></div>
+    <div class="lang-bold-item"><span class="lang-bold-flag">🇺🇸</span><div><div class="lang-bold-name">English</div><div class="lang-bold-level">Professional Working Proficiency</div></div></div>
+  </div>
+</div>
+
+<!-- EDUCATION -->
+<div class="bold-section">
+  <div class="section-flag reveal"><span>04</span> Education & Certifications</div>
+  <h2 class="section-big-title reveal">FORMATION</h2>
+  <div class="edu-bold-grid reveal">
+    <div class="edu-bold-card"><div class="edu-bold-year">2024</div><div class="edu-bold-deg">Postgraduate — Digital Transformation & Leadership</div><div class="edu-bold-inst">Conquer Business School</div></div>
+    <div class="edu-bold-card"><div class="edu-bold-year">2021–2024</div><div class="edu-bold-deg">Technologist in Marketing Management</div><div class="edu-bold-inst">Uninter</div></div>
+    <div class="edu-bold-card"><div class="edu-bold-year">2024</div><div class="edu-bold-deg">Meta Certified Digital Marketing Associate</div><div class="edu-bold-inst">Meta</div></div>
+    <div class="edu-bold-card"><div class="edu-bold-year">2024</div><div class="edu-bold-deg">Meta Certified Media Buying Professional</div><div class="edu-bold-inst">Meta</div></div>
+    <div class="edu-bold-card"><div class="edu-bold-year">2024</div><div class="edu-bold-deg">Storytelling for Digital Marketing</div><div class="edu-bold-inst">Santander Open Academy</div></div>
+    <div class="edu-bold-card"><div class="edu-bold-year">2024</div><div class="edu-bold-deg">Leadership & Team Management</div><div class="edu-bold-inst">Enap</div></div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-bold" id="contact">
+  <div class="contact-bold-title">LET'S<br>CONNECT.</div>
+  <div class="contact-bold-links">
+    <a href="/cdn-cgi/l/email-protection#4c252b233e3c2d2f24292f230c2b212d2520622f2321" class="contact-bold-link">✉ <span class="__cf_email__" data-cfemail="4d242a223f3d2c2e25282e220d2a202c2421632e2220">[email&#160;protected]</span></a>
+    <a href="https://www.linkedin.com/in/igor-pacheco-" target="_blank" class="contact-bold-link">⟶ linkedin.com/in/igor-pacheco-</a>
+    <a href="tel:+573180333365" class="contact-bold-link">☎ +57 318 033 3365</a>
+  </div>
+</div>
+
+<footer>
+  <span>Igor Pacheco · Senior Enterprise SDR · B2B SaaS Sales</span>
+  <span>Bogotá, Colombia · 2025</span>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible'); }), {threshold:0.06});
+  document.querySelectorAll('.reveal, .exp-card').forEach((el,i) => {
+    el.style.transitionDelay = `${(i % 3) * 0.07}s`;
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
